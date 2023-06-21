@@ -1,2 +1,0 @@
-# SquidJunction
-TEST
