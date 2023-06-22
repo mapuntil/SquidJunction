@@ -1,0 +1,3 @@
+[submodule "battlefyAPI"]
+	path = battlefyAPI
+	url = https://github.com/guilherssousa/battlefy-api.git
