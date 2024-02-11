@@ -33,13 +33,13 @@ function timestampGenerator(msTime, disc) {
 
 class Match {
     constructor(match, stageData) {
-        //console.log(match)
+        console.log(match)
         this.match = match
         this.stageData = stageData
         this.isComplete = match?.isComplete
         this.topReady = match.top?.readyAt
         this.bottomReady = match.bottom?.readyAt
-        this.isOngoing = ((this.topReady != undefined || this.bottomReady != undefined) && this.isComplete != true)
+        this.isOngoing = ((this.topReady != undefined && this.bottomReady != undefined) && this.isComplete != true)
         this.startTime = match.top?.readyAt < match.bottom?.readyAt ? new Date(match.top?.readyAt) : new Date(match.bottom?.readyAt);
         this.matchIdentifier = `${match.matchType === "winner" ? 'C' : 'L'}${match.matchNumber}`
         this.topScore = match.top?.score != undefined ? match.top?.score : 0
@@ -58,7 +58,7 @@ class Match {
         
         // gets us the organization name
         if (patternMatch) {
-            return `https://battlefy.com/${patternMatch[1]}/${patternMatch[2]}/${patternMatch[3]}/stage/${stage}/match/${match._id}` // finish this
+            return `https://battlefy.com/${patternMatch[1]}/${patternMatch[2]}/${patternMatch[3]}/stage/${stage}/match/${this.match._id}` // finish this
         } else {
             console.error("ERROR: No Match")
             return ""
@@ -69,7 +69,7 @@ class Match {
 
     getBracketEmbedText() {
         let matchLink = this.getMatchLink(match)
-        return `[\`${this.matchIdentifier}\`](${matchLink}): Expires ${timestampGenerator(this.endTime / 1000, 'R')}, Last update: ${timestampGenerator(this.lastUpdate / 1000, 'R')} (${this.topScore}-${this.bottomScore}) \n`
+        return `[\`${this.matchIdentifier.padStart(3, " ")}\`](${matchLink}): Expires ${timestampGenerator(this.endTime / 1000, 'R')}, Last update: ${timestampGenerator(this.lastUpdate / 1000, 'R')} (${this.topScore}-${this.bottomScore}) \n`
     }
 
     getMatchLength() {
@@ -131,7 +131,7 @@ class Bracket {
             //console.log(matchObject.matchText)
             ongoingSets.push(matchObject)
         }
-        console.log(ongoingSets.length)
+        //console.log(ongoingSets.length)
 
         if (ongoingSets.length === 0) {
             interaction.channel.send({
@@ -145,21 +145,18 @@ class Bracket {
 
         const embeds = []
 
-        //replyContent = replyContent.substring(0, 2000)
-
         let descriptionText = "";
         let descriptionLength = 0;
         const MAX_DESCRIPTION_SIZE = 4096
 
         for (let match of ongoingSets) {
-            console.log(match.matchIdentifier, match.matchText)
+            //console.log(match.matchIdentifier, match.matchText)
             if (match.matchText.length + descriptionLength <= MAX_DESCRIPTION_SIZE) {
                 descriptionText += match.matchText;
                 descriptionLength += match.matchText.length
             } else {
                 const embed = new EmbedBuilder()
                     .setDescription(descriptionText)
-                //console.log(descriptionLength)
                 embeds.push(embed);
                 descriptionText = match.matchText;
                 descriptionLength = match.matchText.length;
