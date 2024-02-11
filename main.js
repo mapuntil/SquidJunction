@@ -31,9 +31,11 @@ function timestampGenerator(msTime, disc) {
     return (`<t:${Math.floor(msTime)}:${disc}>`)
 }
 
+
+
 class Match {
     constructor(match, stageData) {
-        console.log(match)
+        //console.log(match)
         this.match = match
         this.stageData = stageData
         this.isComplete = match?.isComplete
@@ -166,7 +168,6 @@ class Bracket {
         const embed = new EmbedBuilder()
             .setDescription(descriptionText)
         embeds.push(embed);
-
         
         for (let item of embeds) {
             interaction.channel.send({

@@ -17,6 +17,16 @@ const commands = [
                 .setDescription('The Battlefy link to the upcoming tournament')
                 .setRequired(true)
         ),
+    new SlashCommandBuilder()
+        .setName('checkout')
+        .setDescription('Shows details of the match given a match ID')
+        .addStringOption(option =>
+            option
+                .setName('match_id')
+                .setDescription('The ID of the match you want to be shown (ie. C42)')
+                .setRequired(true)
+        ),
+        
 ];
 
 console.log(process.env.CLIENT_ID)
